@@ -43,9 +43,15 @@ class SplineSmoother():
         self.compute_coefs()
 
     def __call__(self, ti):
+        _num = False
         if isinstance(ti, Number):
             ti = [ti]
-        return self.build_X(ti)@self.b + self.build_Z(ti)@self.u
+            _num = True
+        interp = self.build_X(ti)@self.b + self.build_Z(ti)@self.u
+        if _num:
+            return interp.item()
+        else:
+            return interp
 
     def build_knots(self, t):
         """Constructs uniformly spaced knots"""
